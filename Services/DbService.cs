@@ -6,28 +6,24 @@ namespace APDB_Kolokwium_template.Services;
 
 public class DbService(AppDbContext data) : IDbService
 {
-    public async Task<ICollection<ExampleGetDto>> GetAllExamplesAsync()
+    public async Task<ICollection<EnrollmentGetDto>> GetEnrollments()
     {
-        return await data.Examples.Select(e => new ExampleGetDto
+        return await data.Enrollments.Select(e => new EnrollmentGetDto()
         {
-            Id = e.Id,
-            Text = e.Text,
-            OtherId = e.OtherId,
-        }).ToListAsync();
-    }
-
-    public async Task<ICollection<OtherGetDto>> GetAllOthersAsync()
-    {
-        return await data.Others.Select(other => new OtherGetDto
-        {
-            Id = other.Id,
-            Text = other.Text,
-            Examples = other.Examples.Select(e => new ExampleGetDto
+            student = new StudentGetDto() 
+            { 
+                id = e.Student.ID,
+                firstName = e.Student.FirstName,
+                lastName = e.Student.LastName,
+                email = e.Student.Email
+            },
+            course = new CourseGetDto()
             {
-                Id = e.Id,
-                Text = e.Text,
-                OtherId = e.OtherId
-            }).ToList()
+                id = e.Course.ID,
+                title = e.Course.Title,
+                teacher = e.Course.Teacher
+            },
+            enrollmentDate = e.EnrollmentDate
         }).ToListAsync();
     }
-}
+};

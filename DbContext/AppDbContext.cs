@@ -5,9 +5,9 @@ namespace APDB_Kolokwium_template.DAL;
 
 public class AppDbContext : DbContext
 {
-    public DbSet<Other> Others { get; set; }
-    public DbSet<Example> Examples { get; set; }
-    
+    public DbSet<Enrollment> Enrollments { get; set; } = null!;
+    public DbSet<Student> Students { get; set; } = null!;
+    public DbSet<Course> Courses { get; set; } = null!;
     
     public AppDbContext(DbContextOptions options) : base(options) {}
 
@@ -15,44 +15,60 @@ public class AppDbContext : DbContext
     {
         base.OnModelCreating(modelBuilder);
 
-        var others = new List<Other>
+        var students = new List<Student>
         {
             new()
             {
-                Id = 1,
-                Text = "Some text"
+                ID = 1,
+                FirstName = "Anna",
+                LastName = "Nowak",
+                Email = "anna.nowak@example.eu"
+                
             },
             new()
             {
-                Id = 2,
-                Text = "Some other text"
+                ID = 2,
+                FirstName = "Tomasz",
+                LastName = "Wiśniewski",
+                Email = "tomasz.w@example.edu"
             }
         };
 
-        var examples = new List<Example>
+        var courses = new List<Course>
         {
             new()
             {
-                Id = 1,
-                Text = "Some text",
-                OtherId = 1
+                ID = 101,
+                Title = "Wprowadzenie do Algorytmów",
+                Teacher = "dr Kowalski"
             },
             new()
             {
-                Id = 2,
-                Text = "Some other text",
-                OtherId = 2
+                ID = 102,
+                Title = "Bazy Danych",
+                Teacher = "mgr Nowicka"
+            }
+        };
+
+        var enrollments = new List<Enrollment>
+        {
+            new()
+            {
+                Student_ID = 1,
+                Course_ID = 101,
+                EnrollmentDate = new DateTime(2024, 10, 01, 10, 0, 0),
             },
             new()
             {
-                Id = 3,
-                Text = "I'm a different example",
-                OtherId = 2
+                Student_ID = 2,
+                Course_ID = 102,
+                EnrollmentDate = new DateTime(2024, 10, 02, 9, 30, 0),
             }
         };
         
-        modelBuilder.Entity<Other>().HasData(others);
-        modelBuilder.Entity<Example>().HasData(examples);
+        modelBuilder.Entity<Student>().HasData(students);
+        modelBuilder.Entity<Course>().HasData(courses);
+        modelBuilder.Entity<Enrollment>().HasData(enrollments);
     }
     
 }
